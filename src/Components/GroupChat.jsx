@@ -1,56 +1,62 @@
+/* eslint-disable react/prop-types */
 import { IoMdSend } from "react-icons/io";
 import { useEffect, useState } from "react";
 
-/* eslint-disable react/prop-types */
-const GroupChat = ({ group }) => {
+const GroupChat = ({ activeChat }) => {
   const [messages, setMessages] = useState("");
-  const [chatData, setChatData] = useState([]);
+  const [messagesList, setMessagesList] = useState([]);
 
-  // Load messages when the group changes
   useEffect(() => {
-    const storedGroups = JSON.parse(localStorage.getItem("GroupList")) || [];
-    const currentGroup = storedGroups.find(g => g.id === group.id);
-    setChatData(currentGroup?.messages || []);
-  }, [group]);
+    if (activeChat) {
+      const groupMessages = JSON.parse(localStorage.getItem(`Messages_${activeChat.id}`)) || [];
+      setMessagesList(groupMessages);
+    }
+  }, [activeChat]);
 
   const addMessage = () => {
     if (!messages.trim()) return;
 
-    const storedGroups = JSON.parse(localStorage.getItem("GroupList")) || [];
+    const groupMessages = JSON.parse(localStorage.getItem(`Messages_${activeChat.id}`)) || [];
+    groupMessages.push(messages);
+    localStorage.setItem(`Messages_${activeChat.id}`, JSON.stringify(groupMessages));
 
-    // Update only the selected group's messages
-    const updatedGroups = storedGroups.map(g => {
-      if (g.id === group.id) {
-        return { ...g, messages: [...(g.messages || []), messages] };
-      }
-      return g;
-    });
-
-    localStorage.setItem("GroupList", JSON.stringify(updatedGroups));
-
-    // Update state to reflect new message
-    setChatData([...chatData, messages]);
+    setMessagesList(groupMessages);
     setMessages("");
   };
+
+  function getInitials(name) {
+    if (!name) return "";
+    const nameParts = name.split(" ");
+    return nameParts.map((part) => part[0]).join("").toUpperCase();
+  }
 
   return (
     <div>
       <div className="headerbox">
-        <img src="/src/assets/avtar.jpg" alt="dp" />
-        <h1>{group.name}</h1>
+        <div 
+          className="user-profile-image" 
+          style={{ backgroundColor: activeChat?.color, marginRight: "10px",padding: "5px 7px" }}
+        >
+          {getInitials(activeChat?.name)}
+        </div>
+        <h1>{activeChat?.name}</h1>
       </div>
+
+      {/* Chat Section */}
       <div className="chat-section">
-        {chatData.map((msg, index) => (
-          <div key={index} className="msg">{msg}</div>
+        {messagesList.map((msg, index) => (
+          <div key={index} className="msg">
+            <p>{msg}</p>
+          </div>
         ))}
       </div>
+
+      {/* Reply Section */}
       <div className="reply-section">
         <textarea
-          name="reply"
-          id="reply"
           value={messages}
           onChange={(e) => setMessages(e.target.value)}
-          placeholder="Text Here...."
+          placeholder="Type a message..."
         ></textarea>
         <div className="send-btn">
           <IoMdSend onClick={addMessage} />

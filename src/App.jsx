@@ -6,27 +6,28 @@ import Modal from "./Components/Modal";
 import { useState } from "react";
 
 function App() {
-  const [activeChat, setActiveChat] = useState(null); // Active group object
+  const [activeChat, setActiveChat] = useState(null); // Store selected group
   const [isOpen, setIsOpen] = useState(false);
   const toggleModal = () => setIsOpen(!isOpen);
 
+  // Ensure GroupList is always valid JSON
+  const groupList = JSON.parse(localStorage.getItem("GroupList") || "[]");
+
   return (
     <div className="main-container">
+      {/* Left Sidebar */}
       <section className="left-section">
         <h1 className="title">Pocket Notes</h1>
-        <Groups 
-          group={JSON.parse(localStorage.getItem("GroupList")) || []} 
-          setActiveChat={setActiveChat} // Set active group
-        />
+        <Groups group={groupList} setActiveChat={setActiveChat} />
         <button className="add-btn" onClick={toggleModal}>+</button>    
         {isOpen && <Modal onClose={toggleModal} />}
       </section>
 
-      {/* Right Chating Section */}
+      {/* Right Chat Section */}
       <section className="right-section">
         <div className="rightbox">
           {activeChat ? (
-            <GroupChat group={activeChat} />
+            <GroupChat activeChat={activeChat} />
           ) : (
             <Home />
           )}

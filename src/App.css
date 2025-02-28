@@ -79,6 +79,7 @@
   font-size: 20px;
   border-radius: 50%;
   font-weight: 800;
+  padding: 5px 7px;
   margin: 2px;
 }
 
@@ -103,13 +104,7 @@
   color: #dae5f5;
   align-items: center;
 }
-img {
-  width: 50px;
-  height: 50px;
-  padding: 5px 2px;
-  margin-right: 10px;
-  border-radius: 50px;
-}
+
 .chat-section {
   position: relative;
   overflow-y: auto;
