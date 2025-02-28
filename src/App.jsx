@@ -6,11 +6,10 @@ import Modal from "./Components/Modal";
 import { useState } from "react";
 
 function App() {
-  const [activeChat, setActiveChat] = useState(null); // Store selected group
+  const [activeChat, setActiveChat] = useState(null); 
   const [isOpen, setIsOpen] = useState(false);
   const toggleModal = () => setIsOpen(!isOpen);
 
-  // Ensure GroupList is always valid JSON
   const groupList = JSON.parse(localStorage.getItem("GroupList") || "[]");
 
   return (
