@@ -34,7 +34,7 @@ const Modal = (props) => {
         }}>Create New Group</h1>
         <div>
           <label htmlFor="GroupName">Group Name : </label>
-          <input type="text" value={groupName} onChange={(e) => setGroupName(e.target.value)} placeholder="Group Name" />
+          <input type="text" id="GroupName" value={groupName} onChange={(e) => setGroupName(e.target.value)} placeholder="Group Name" />
         </div>
         <div className="color">
           <label htmlFor="color">Choose Colour :</label>
