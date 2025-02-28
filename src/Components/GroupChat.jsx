@@ -1,47 +1,48 @@
-import Msg from "./Msg";
 import { IoMdSend } from "react-icons/io";
 import { useEffect, useState } from "react";
-import {Data} from "../assets/Data";
-const GroupChat = () => {
-  const [messages, setMessages] = useState("");
-  // const [messagesList, setMessagesList] = useState([]);
-  const data = JSON.parse(localStorage.getItem("GroupList"));
 
+/* eslint-disable react/prop-types */
+const GroupChat = ({ group }) => {
+  const [messages, setMessages] = useState("");
+  const [chatData, setChatData] = useState([]);
+
+  // Load messages when the group changes
   useEffect(() => {
-    localStorage.setItem("GroupList", JSON.stringify(data));
-  }, [data]);
+    const storedGroups = JSON.parse(localStorage.getItem("GroupList")) || [];
+    const currentGroup = storedGroups.find(g => g.id === group.id);
+    setChatData(currentGroup?.messages || []);
+  }, [group]);
 
   const addMessage = () => {
-    // if (messages === "") {
-    //   return;
-    // }
-    // if(!data.message ){
-    //   data.message = [];
-    // }
-    // else{
-    //   data.message.push(messages);
-    // }
-    // setMessagesList([...messagesList, messages]);
+    if (!messages.trim()) return;
 
-    // Data.push({ message: messages });
-    // console.log(Data);
-    // setMessages("");
-  }
-  
+    const storedGroups = JSON.parse(localStorage.getItem("GroupList")) || [];
+
+    // Update only the selected group's messages
+    const updatedGroups = storedGroups.map(g => {
+      if (g.id === group.id) {
+        return { ...g, messages: [...(g.messages || []), messages] };
+      }
+      return g;
+    });
+
+    localStorage.setItem("GroupList", JSON.stringify(updatedGroups));
+
+    // Update state to reflect new message
+    setChatData([...chatData, messages]);
+    setMessages("");
+  };
+
   return (
     <div>
       <div className="headerbox">
         <img src="/src/assets/avtar.jpg" alt="dp" />
-        <h1>Sign Up</h1>
+        <h1>{group.name}</h1>
       </div>
       <div className="chat-section">
-        {/* {
-          Data.map((item) => (
-            <div key={item} className="msg">
-              <Msg message={item.message} />
-            </div>
-          ))
-        } */}
+        {chatData.map((msg, index) => (
+          <div key={index} className="msg">{msg}</div>
+        ))}
       </div>
       <div className="reply-section">
         <textarea
@@ -52,7 +53,7 @@ const GroupChat = () => {
           placeholder="Text Here...."
         ></textarea>
         <div className="send-btn">
-          <IoMdSend onClick={addMessage}/>
+          <IoMdSend onClick={addMessage} />
         </div>
       </div>
     </div>
