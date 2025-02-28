@@ -35,13 +35,13 @@ const GroupChat = () => {
         <h1>Sign Up</h1>
       </div>
       <div className="chat-section">
-        {
+        {/* {
           Data.map((item) => (
             <div key={item} className="msg">
               <Msg message={item.message} />
             </div>
           ))
-        }
+        } */}
       </div>
       <div className="reply-section">
         <textarea
