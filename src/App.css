@@ -215,8 +215,8 @@ button:hover,
 }
 .modalbox {
   position: relative;
-  min-width: 400px;
-  min-height: 150px;
+  width: 400px;
+  height: 150px;
   flex-direction: column;
   background-color: #ffffff;
   padding: 30px;
@@ -242,4 +242,62 @@ label{
   border-radius: 8px;
   background-color: #001f8b;
   color: #ffffff;
+}
+/* Add this to src/App.css */
+
+/* Mobile layout */
+@media (max-width: 768px) {
+  /* Hide right section initially on mobile */
+  .right-section {
+    display: none;
+    width: 100%;
+  }
+
+  /* Show left section on mobile */
+  .left-section {
+    width: 100%;
+  }
+
+  /* Adjust font sizes for mobile */
+  .title {
+    font-size: 18px;
+  }
+
+  .group-name {
+    font-size: 14px;
+  }
+
+  .msg {
+    font-size: 12px;
+  }
+
+  .reply-section {
+    font-size: 12px;
+  }
+
+  .send-btn {
+    font-size: 12px;
+  }
+
+  textarea {
+    font-size: 12px;
+  }
+  .add-btn{
+    bottom: 30px;
+    left: 250px;
+  }
+  .modalbox {
+    padding: 8px;
+    font-size: 12px;
+    text-wrap: nowrap;
+    width: 300px;
+    font-weight: 700;
+  }
+  .color label{
+    margin-right: 5px;
+  }
+  .color span{
+    width: 32px;
+    height: 32px;
+  }
 }
